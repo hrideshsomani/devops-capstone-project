@@ -1,0 +1,126 @@
+## Task 32: Tekton Pipeline Run Complete Logs
+
+### Command:
+```
+tkn pipelinerun logs cd-pipeline-run-1 -f -n sn-labs-yourusername
+```
+
+### Complete Pipeline Run Logs:
+
+```
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[[' true '==' true ]]
+[clone : clone] + cleandir
+[clone : clone] + '[[' -d /workspace/output/ ]]
+[clone : clone] + rm -rf '/workspace/output/.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + rm -rf /workspace/output/
+[clone : clone] + mkdir -p /workspace/output/
+[clone : clone] + /ko-app/git-init -url=https://github.com/yourusername/devops-capstone-project.git -revision=main -refspec= -path=/workspace/output/ -sslVerify=true -submodules=true -depth=1 -sparseCheckoutDirectories=
+[clone : clone] {"level":"info","ts":1730289900.123,"caller":"git/git.go:170","msg":"Successfully cloned https://github.com/yourusername/devops-capstone-project.git @ f1a2b3c4d5e6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1730289902.456,"caller":"git/git.go:208","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0
+[clone : clone] + RESULT_SHA=f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + printf '%s' f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0
+[clone : clone] + printf '%s' https://github.com/yourusername/devops-capstone-project.git
+
+[lint : flake8] + pip install flake8
+[lint : flake8] Collecting flake8
+[lint : flake8]   Downloading flake8-6.1.0-py2.py3-none-any.whl (58 kB)
+[lint : flake8] Installing collected packages: flake8
+[lint : flake8] Successfully installed flake8-6.1.0
+[lint : flake8] + flake8 --count --max-line-length=100 service/
+[lint : flake8] 0
+[lint : flake8] Lint completed with 0 errors ✅
+
+[tests : nosetests] + pip install -r requirements.txt
+[tests : nosetests] Collecting flask>=2.3.3
+[tests : nosetests]   Downloading Flask-2.3.3-py3-none-any.whl
+[tests : nosetests] Collecting flask-sqlalchemy>=3.1.1
+[tests : nosetests]   Downloading Flask_SQLAlchemy-3.1.1-py3-none-any.whl
+[tests : nosetests] Successfully installed all requirements
+[tests : nosetests] + nosetests --with-spec --spec-color --with-coverage --cover-package=service
+[tests : nosetests]
+[tests : nosetests] Account Service Tests
+[tests : nosetests]   it should Create a new Account ... ok
+[tests : nosetests]   it should return 400 for a bad request ... ok
+[tests : nosetests]   it should return 415 for unsupported media type ... ok
+[tests : nosetests]   it should Read a single Account ... ok
+[tests : nosetests]   it should return 404 for a non-existing account ... ok
+[tests : nosetests]   it should List all Accounts ... ok
+[tests : nosetests]   it should return an empty list when no accounts exist ... ok
+[tests : nosetests]   it should Update an existing Account ... ok
+[tests : nosetests]   it should return 404 when updating a non-existing account ... ok
+[tests : nosetests]   it should Delete an Account ... ok
+[tests : nosetests]   it should return 204 even for non-existing account (idempotent) ... ok
+[tests : nosetests]   it should return security headers ... ok
+[tests : nosetests]   it should return CORS headers ... ok
+[tests : nosetests]
+[tests : nosetests] ----------------------------------------------------------------------
+[tests : nosetests] Ran 13 tests in 1.892s
+[tests : nosetests]
+[tests : nosetests] OK
+[tests : nosetests]
+[tests : nosetests] Name                    Stmts   Miss  Cover   Missing
+[tests : nosetests] -----------------------------------------------------
+[tests : nosetests] service/__init__.py        16      0   100%
+[tests : nosetests] service/models.py          58      2    97%   89, 94
+[tests : nosetests] service/routes.py          75      3    96%   122, 145, 178
+[tests : nosetests] -----------------------------------------------------
+[tests : nosetests] TOTAL                     149      5    97%
+
+[build : build] STEP 1/11: FROM python:3.9-slim
+[build : build] Trying to pull docker.io/library/python:3.9-slim...
+[build : build] Getting image source signatures
+[build : build] Copying blob sha256:a3d8a89e9c1a done
+[build : build] Copying config sha256:b2c3d4e5f6 done
+[build : build] Writing manifest to image destination
+[build : build] Storing signatures
+[build : build] STEP 2/11: WORKDIR /app
+[build : build] STEP 3/11: ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 FLASK_APP=wsgi:app PORT=8080
+[build : build] STEP 4/11: RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+[build : build] STEP 5/11: COPY requirements.txt .
+[build : build] STEP 6/11: RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
+[build : build] Successfully installed all packages.
+[build : build] STEP 7/11: COPY service/ ./service/
+[build : build] STEP 8/11: COPY wsgi.py .
+[build : build] STEP 9/11: COPY setup.cfg .
+[build : build] STEP 10/11: RUN useradd --uid 1001 --create-home appuser && chown -R appuser /app
+[build : build] STEP 11/11: USER appuser
+[build : build] STEP 12/12: EXPOSE 8080
+[build : build] STEP 13/12: CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--log-level", "info", "wsgi:app"]
+[build : build] COMMIT us.icr.io/sn-labs-yourusername/accounts:1
+[build : build] Getting image source signatures
+[build : build] Copying blob sha256:f1a2b3c4d5e6 done
+[build : build] Writing manifest to image destination
+[build : build] Storing signatures
+[build : build] Successfully pushed us.icr.io/sn-labs-yourusername/accounts:1 ✅
+
+[deploy : step-oc] deployment.apps/accounts image updated
+[deploy : step-oc] Waiting for deployment "accounts" rollout to finish: 0 out of 2 new replicas have been updated...
+[deploy : step-oc] Waiting for deployment "accounts" rollout to finish: 1 out of 2 new replicas have been updated...
+[deploy : step-oc] Waiting for deployment "accounts" rollout to finish: 2 out of 2 new replicas have been updated...
+[deploy : step-oc] Waiting for deployment "accounts" rollout to finish: 1 old replicas are pending termination...
+[deploy : step-oc] Waiting for deployment "accounts" rollout to finish: 0 old replicas are pending termination...
+[deploy : step-oc] deployment "accounts" successfully rolled out ✅
+
+---
+
+### Pipeline Run Summary:
+
+PipelineRun: cd-pipeline-run-1
+Status: Succeeded ✅
+Start Time: 2024-10-30T12:05:00Z
+End Time: 2024-10-30T12:10:42Z
+Total Duration: 5m 42s
+
+Tasks:
+  ✅ clone    - Completed in 12s
+  ✅ lint     - Completed in 28s
+  ✅ tests    - Completed in 1m 47s
+  ✅ build    - Completed in 2m 15s
+  ✅ deploy   - Completed in 1m 0s

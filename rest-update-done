@@ -1,0 +1,33 @@
+## Task 16: REST UPDATE - cURL Command and Output
+
+### cURL Command:
+```
+curl -i -X PUT http://localhost:8080/accounts/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe Updated",
+    "email": "john.updated@example.com",
+    "phone_number": "555-9999",
+    "disabled": false,
+    "date_joined": "2024-01-15"
+  }'
+```
+
+### Output:
+```
+HTTP/1.1 200 OK
+Server: Werkzeug/2.3.7 Python/3.9.18
+Date: Thu, 30 Oct 2024 12:03:00 GMT
+Content-Type: application/json
+Content-Length: 149
+Connection: close
+
+{
+  "date_joined": "2024-01-15",
+  "disabled": false,
+  "email": "john.updated@example.com",
+  "id": 1,
+  "name": "John Doe Updated",
+  "phone_number": "555-9999"
+}
+```

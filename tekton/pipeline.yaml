@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: cd-pipeline
+spec:
+  params:
+    - name: build-image
+      type: string
+  workspaces:
+    - name: pipeline-workspace
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: pipeline-workspace
+      params:
+        - name: url
+          value: https://github.com/yourusername/devops-capstone-project.git
+        - name: revision
+          value: main
+    - name: lint
+      taskRef:
+        name: flake8
+        kind: Task
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      params:
+        - name: image
+          value: "python:3.9-slim"
+        - name: args
+          value: ["--count", "--max-line-length=100", "service/"]
+      runAfter:
+        - clone
+    - name: tests
+      taskRef:
+        name: nose
+        kind: Task
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      params:
+        - name: image
+          value: "python:3.9-slim"
+        - name: args
+          value: ["--with-spec", "--spec-color", "--with-coverage", "--cover-package=service"]
+      runAfter:
+        - lint
+    - name: build
+      taskRef:
+        name: buildah
+        kind: ClusterTask
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      params:
+        - name: IMAGE
+          value: $(params.build-image)
+      runAfter:
+        - tests
+    - name: deploy
+      taskRef:
+        name: openshift-client
+        kind: ClusterTask
+      params:
+        - name: SCRIPT
+          value: |
+            kubectl set image deployment/accounts accounts=$(params.build-image)
+            kubectl rollout status deployment/accounts
+      runAfter:
+        - build

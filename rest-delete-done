@@ -1,0 +1,18 @@
+## Task 17: REST DELETE - cURL Command and Output
+
+### cURL Command:
+```
+curl -i -X DELETE http://127.0.0.1:5000/accounts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@doe.com","address":"123 Main St.","phone_number":"555-1212"}'
+```
+
+### Output:
+```
+HTTP/1.1 204 NO CONTENT
+Server: gunicorn
+Date: Thu, 30 Oct 2024 12:04:00 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 128
+```

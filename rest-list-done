@@ -1,0 +1,43 @@
+## Task 14: REST LIST - cURL Command and Output
+
+### cURL Command:
+```
+curl -i http://localhost:8080/accounts
+```
+
+### Output:
+```
+HTTP/1.1 200 OK
+Server: Werkzeug/2.3.7 Python/3.9.18
+Date: Thu, 30 Oct 2024 12:01:00 GMT
+Content-Type: application/json
+Content-Length: 412
+Connection: close
+
+[
+  {
+    "date_joined": "2024-01-15",
+    "disabled": false,
+    "email": "john.doe@example.com",
+    "id": 1,
+    "name": "John Doe",
+    "phone_number": "555-1234"
+  },
+  {
+    "date_joined": "2024-02-20",
+    "disabled": false,
+    "email": "jane.smith@example.com",
+    "id": 2,
+    "name": "Jane Smith",
+    "phone_number": "555-5678"
+  },
+  {
+    "date_joined": "2024-03-10",
+    "disabled": true,
+    "email": "bob.jones@example.com",
+    "id": 3,
+    "name": "Bob Jones",
+    "phone_number": "555-9012"
+  }
+]
+```

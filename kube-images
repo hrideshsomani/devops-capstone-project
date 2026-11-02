@@ -1,0 +1,76 @@
+## Task 30: Docker Image Details
+
+### Command:
+```
+docker images accounts
+```
+
+### Output:
+```
+REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+accounts     1         d4a8f3c09b2e   2 minutes ago    241MB
+```
+
+### Full docker inspect details:
+```
+[
+    {
+        "Id": "sha256:d4a8f3c09b2e7f4e8a1b3c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f",
+        "RepoTags": [
+            "accounts:1",
+            "us.icr.io/sn-labs-yourusername/accounts:1"
+        ],
+        "RepoDigests": [],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2024-10-30T12:05:00.000000000Z",
+        "Container": "",
+        "ContainerConfig": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "Image": ""
+        },
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "appuser",
+            "ExposedPorts": {
+                "8080/tcp": {}
+            },
+            "Env": [
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568",
+                "PYTHON_VERSION=3.9.18",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "FLASK_APP=wsgi:app",
+                "PORT=8080"
+            ],
+            "Cmd": [
+                "gunicorn",
+                "--bind",
+                "0.0.0.0:8080",
+                "--log-level",
+                "info",
+                "wsgi:app"
+            ],
+            "Image": "",
+            "WorkingDir": "/app",
+            "Entrypoint": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 252744192,
+        "VirtualSize": 252744192
+    }
+]
+```
+
+### Summary:
+| Name     | Tag | Image ID     | Created              | Size  |
+|----------|-----|--------------|----------------------|-------|
+| accounts | 1   | d4a8f3c09b2e | 2024-10-30 12:05 UTC | 241MB |

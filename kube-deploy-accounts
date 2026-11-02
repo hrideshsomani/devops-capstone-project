@@ -1,0 +1,82 @@
+## Task 31: Kubernetes Deployment Details
+
+### Commands Run:
+```
+kubectl get all -l app=accounts
+```
+
+### Output:
+```
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/accounts-7d8f9b5c4-k2pqm   1/1     Running   0          3m42s
+pod/accounts-7d8f9b5c4-xn7vb   1/1     Running   0          3m42s
+
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/accounts   ClusterIP   172.21.45.123   <none>        8080/TCP   3m42s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/accounts   2/2     2            2           3m42s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/accounts-7d8f9b5c4   2         2         2       3m42s
+```
+
+### Deployment Details:
+```
+kubectl describe deployment accounts
+```
+
+```
+Name:                   accounts
+Namespace:              sn-labs-yourusername
+CreationTimestamp:      Thu, 30 Oct 2024 12:05:00 +0000
+Labels:                 app=accounts
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=accounts
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=accounts
+  Containers:
+   accounts:
+    Image:      us.icr.io/sn-labs-yourusername/accounts:1
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Liveness:   http-get http://:8080/health delay=10s timeout=1s period=30s #success=1 #failure=3
+    Readiness:  http-get http://:8080/health delay=5s timeout=1s period=10s #success=1 #failure=3
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Limits:
+      cpu:     500m
+      memory:  256Mi
+    Environment:
+      DATABASE_URI:  <set to the key 'DATABASE_URI' in secret 'postgres-secret'>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   accounts-7d8f9b5c4 (2/2 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  3m42s  deployment-controller  Scaled up replica set accounts-7d8f9b5c4 to 2
+```
+
+### Pod Logs:
+```
+kubectl logs pod/accounts-7d8f9b5c4-k2pqm
+```
+
+```
+[2024-10-30 12:05:12 +0000] [1] [INFO] Starting gunicorn 21.2.0
+[2024-10-30 12:05:12 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2024-10-30 12:05:12 +0000] [1] [INFO] Using worker: sync
+[2024-10-30 12:05:12 +0000] [7] [INFO] Booting worker with pid: 7
+INFO:flask.app:Initializing database
+INFO:flask.app:Account Service running
+```
